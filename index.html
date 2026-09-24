@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra historia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<div id="storageBanner" style="display:none;"></div>
+
+<div id="accessGate" class="access-gate">
+  <div class="access-card">
+    <div class="access-thread"></div>
+    <div class="eyebrow" style="text-align:center;">privado</div>
+    <h1 class="access-title">Nuestra historia</h1>
+    <p id="accessSubtitle" class="access-sub">Escribe nuestros apodos para entrar.</p>
+    <input id="accessInput1" class="access-input" placeholder="Apodo 1" maxlength="30" autocomplete="off">
+    <input id="accessInput2" class="access-input" placeholder="Apodo 2" maxlength="30" autocomplete="off">
+    <button class="btn-gold" style="width:100%; margin-top:6px;" onclick="handleAccessSubmit()">Entrar</button>
+    <p id="accessError" class="access-error"></p>
+  </div>
+</div>
+
+<div id="appContent" style="display:none;">
+
+<div id="namesModal" style="display:none;">
+  <div class="box">
+    <h3>Antes de empezar…</h3>
+    <p>¿Cómo se llaman ustedes dos? Esto queda guardado para siempre en la página.</p>
+    <input id="nameA" placeholder="Tu nombre" maxlength="24">
+    <input id="nameB" placeholder="Su nombre" maxlength="24">
+    <button class="btn-gold" onclick="saveNames()">Guardar</button>
+  </div>
+</div>
+
+<div id="apodosEditModal" style="display:none;">
+  <div class="box">
+    <h3>Cambiar apodos de acceso</h3>
+    <p>Escribe los nuevos apodos que van a usar para entrar de ahora en adelante.</p>
+    <input id="apodoEdit1" placeholder="Nuevo apodo 1" maxlength="30">
+    <input id="apodoEdit2" placeholder="Nuevo apodo 2" maxlength="30">
+    <button class="btn-gold" onclick="saveApodosEdit()">Guardar</button>
+    <p id="apodosEditMsg" style="font-size:12.5px; color:var(--rose); margin-top:12px; min-height:16px;"></p>
+  </div>
+</div>
+
+<nav>
+  <span class="brand" id="navBrand">✦ nuestra historia</span>
+  <button data-target="inicio" class="active">Inicio</button>
+  <button data-target="canciones">Canciones</button>
+  <button data-target="poemas">Poemas</button>
+  <button data-target="fotos">Fotos</button>
+  <button data-target="razones">Razones</button>
+  <button data-target="notas">Notas</button>
+</nav>
+
+<section id="inicio">
+  <div class="thread"></div>
+  <div class="eyebrow" style="text-align:center;">Una página solo para nosotros</div>
+  <h1 class="hero-names" id="heroNames" title="Toca para editar los nombres">Tú &amp; Yo</h1>
+  <p class="hero-tag">Aquí guardamos las canciones que nos recuerdan al otro, los poemas, las fotos y las notas que nos escribimos cuando no estamos cerca.</p>
+  <div>
+    <button class="edit-since" onclick="openNamesModal()">cambiar nombres</button>
+    <button class="edit-since" onclick="openApodosEditModal()">cambiar apodos de acceso</button>
+  </div>
+</section>
+
+<div id="cancionesModal" class="poems-modal-overlay" onclick="if(event.target===this) closeCancionesModal()">
+  <div class="poems-modal-panel">
+    <button class="poems-modal-close" onclick="closeCancionesModal()">✕</button>
+    <div class="eyebrow">playlist</div>
+    <h2>Canciones que me recuerdan a ti</h2>
+    <p class="sub">Cada una tiene una razón detrás.</p>
+    <div class="grid" id="songsList"></div>
+  </div>
+</div>
+
+<div id="poemasModal" class="poems-modal-overlay" onclick="if(event.target===this) closePoemsModal()">
+  <div class="poems-modal-panel">
+    <button class="poems-modal-close" onclick="closePoemsModal()">✕</button>
+    <div class="eyebrow">para él</div>
+    <h2>Poemas que le he escrito</h2>
+    <p class="sub">Palabras que no le he dicho en voz alta, o que sí, pero que quiero que se queden aquí.</p>
+    <div id="poemFeatured"></div>
+    <div class="grid" id="poemsList"></div>
+  </div>
+</div>
+
+<div id="fotosModal" class="poems-modal-overlay" onclick="if(event.target===this) closeFotosModal()">
+  <div class="poems-modal-panel">
+    <button class="poems-modal-close" onclick="closeFotosModal()">✕</button>
+    <div class="eyebrow">recuerdos</div>
+    <h2>Nuestras fotos</h2>
+    <p class="sub">Cada una con su propio recuerdo.</p>
+    <div class="photo-grid" id="photosList"></div>
+  </div>
+</div>
+
+<section id="notas">
+  <div class="eyebrow">de mí para ti, de ti para mí</div>
+  <h2>Notas de Amor</h2>
+  <p class="sub">Un lugar para dejarnos mensajes cuando queramos decir algo sin decirlo en persona. Se guardan aquí para siempre.</p>
+  <div class="note-form">
+    <select class="who" id="noteAuthor"></select>
+    <input id="noteText" placeholder="Escribe tu nota..." style="flex:2;">
+    <button class="submit btn-gold" onclick="addNote(event)">Enviar</button>
+  </div>
+  <div class="grid" id="notesList"></div>
+</section>
+
+<div id="razonesModal" class="poems-modal-overlay" onclick="if(event.target===this) closeReasonsModal()">
+  <div class="poems-modal-panel">
+    <button class="poems-modal-close" onclick="closeReasonsModal()">✕</button>
+    <div class="eyebrow">365 motivos</div>
+    <h2>Razones por las que te amo</h2>
+    <p class="sub">Una razón por cada día del año, porque siempre encuentro una nueva forma de elegirte.</p>
+    <div class="reason-count" id="reasonCount">365 razones</div>
+    <div class="grid" id="reasonsList"></div>
+  </div>
+</div>
+
+<div id="secretModal" class="secret-modal-overlay" onclick="if(event.target===this) closeSecretModal()">
+  <div class="secret-modal-panel" role="dialog" aria-modal="true" aria-labelledby="secretModalTitle">
+    <button class="poems-modal-close" onclick="closeSecretModal()" aria-label="Cerrar secreto">✕</button>
+    <div class="eyebrow">nuestro idioma secreto</div>
+    <h2 id="secretModalTitle"></h2>
+    <p id="secretModalMessage" class="secret-modal-message"></p>
+  </div>
+</div>
+
+<div id="drawingModal" class="secret-modal-overlay" onclick="if(event.target===this) closeDrawingModal()">
+  <div class="secret-image-panel" role="dialog" aria-modal="true" aria-label="Nuestro dibujo">
+    <button class="poems-modal-close" onclick="closeDrawingModal()" aria-label="Cerrar dibujo">✕</button>
+    <div class="eyebrow">Nuestro Dibujo</div>
+    <img class="secret-image" src="images/photo-39.jpeg" alt="Nuestro dibujo">
+  </div>
+</div>
+
+<footer>
+  Hecha Con <span class="heart">♥</span> Para Nosotros
+  <button class="secret-trigger" data-secret-id="te-lobo" aria-label="Descubrir un secreto">Te lobo 🐺</button>
+  <button class="secret-trigger" data-secret-id="esperare" aria-label="Descubrir otro secreto">Esperaré 🌱</button>
+  <button class="secret-trigger" data-secret-id="nuestro-dibujo" aria-label="Descubrir nuestro dibujo">Nuestro Dibujo 🎨</button>
+</footer>
+
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
