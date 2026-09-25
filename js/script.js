@@ -1119,6 +1119,11 @@ document.querySelectorAll('.secret-trigger[data-secret-id]').forEach(trigger => 
     }, 700);
   });
 });
+document.querySelectorAll('.secret-trigger[data-atlas-page]').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    window.location.href = trigger.dataset.atlasPage;
+  });
+});
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { closePoemsModal(); closeCancionesModal(); closeFotosModal(); closeReasonsModal(); closeSecretModal(); closeDrawingModal(); }
 });
