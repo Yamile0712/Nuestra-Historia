@@ -239,9 +239,33 @@
     cursor:pointer; font-size:16px; z-index:2;
   }
   .poems-modal-close:hover{background:var(--rose); color:var(--ink);}
+  .atlas-modal-overlay{
+    display:none; position:fixed; inset:0; z-index:280; padding:12px;
+    background:rgba(6,7,14,.94); backdrop-filter:blur(10px);
+  }
+  .atlas-modal-overlay.open{display:block;}
+  .atlas-modal-panel{
+    display:flex; flex-direction:column; width:min(1440px,100%); height:100%; margin:0 auto;
+    overflow:hidden; background:var(--bg); border:1px solid rgba(201,161,94,.25);
+    border-radius:12px; box-shadow:0 40px 90px rgba(0,0,0,.55);
+    animation:poemsPanelIn .35s ease;
+  }
+  .atlas-modal-header{
+    display:flex; flex:0 0 auto; align-items:center; justify-content:space-between;
+    gap:16px; padding:12px 18px; border-bottom:1px solid rgba(201,161,94,.15);
+  }
+  .atlas-modal-header .eyebrow{margin:0 0 3px;}
+  .atlas-modal-header h2{font-size:22px; margin:0;}
+  .atlas-back{white-space:nowrap;}
+  .atlas-frame{display:block; flex:1 1 auto; width:100%; min-height:0; border:0; background:var(--bg);}
   @media(max-width:640px){
     .poems-modal-panel{padding:70px 20px 40px;}
     .poems-modal-overlay{padding:0;}
+    .atlas-modal-overlay{padding:0;}
+    .atlas-modal-panel{border:0; border-radius:0;}
+    .atlas-modal-header{padding:12px; align-items:flex-start;}
+    .atlas-modal-header h2{font-size:18px;}
+    .atlas-back{padding:10px 12px; font-size:12px;}
   }
 
   .poem-hero{

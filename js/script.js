@@ -1107,6 +1107,24 @@ function closeDrawingModal() {
   document.getElementById('drawingModal').classList.remove('open');
   document.body.style.overflow = '';
 }
+function openAtlasModal(url) {
+  const modal = document.getElementById('atlasModal');
+  document.getElementById('atlasFrame').src = url;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.atlas-back').focus();
+}
+function closeAtlasModal() {
+  const modal = document.getElementById('atlasModal');
+  if (!modal.classList.contains('open')) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.getElementById('atlasFrame').src = 'about:blank';
+  document.body.style.overflow = '';
+  document.getElementById('inicio').scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('.secret-trigger[data-atlas-page]').focus();
+}
 document.querySelectorAll('.secret-trigger[data-secret-id]').forEach(trigger => {
   trigger.addEventListener('click', () => {
     if (trigger.classList.contains('is-awakening')) return;
@@ -1121,11 +1139,17 @@ document.querySelectorAll('.secret-trigger[data-secret-id]').forEach(trigger => 
 });
 document.querySelectorAll('.secret-trigger[data-atlas-page]').forEach(trigger => {
   trigger.addEventListener('click', () => {
-    window.location.href = trigger.dataset.atlasPage;
+    if (trigger.classList.contains('is-awakening')) return;
+    trigger.classList.add('is-awakening');
+    Array.from({ length: 5 }, () => createSecretSpark(trigger));
+    setTimeout(() => {
+      trigger.classList.remove('is-awakening');
+      openAtlasModal(trigger.dataset.atlasPage);
+    }, 700);
   });
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closePoemsModal(); closeCancionesModal(); closeFotosModal(); closeReasonsModal(); closeSecretModal(); closeDrawingModal(); }
+  if (e.key === 'Escape') { closePoemsModal(); closeCancionesModal(); closeFotosModal(); closeReasonsModal(); closeSecretModal(); closeDrawingModal(); closeAtlasModal(); }
 });
 
 const navButtons = document.querySelectorAll('nav button[data-target]');
