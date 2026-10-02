@@ -79,17 +79,11 @@ async function loadNames() {
       const { a, b } = JSON.parse(r.value);
       document.getElementById('heroNames').textContent = `${a} & ${b}`;
       document.getElementById('navBrand').textContent = `✦ ${a} & ${b}`;
-      buildAuthorSelect(a, b);
       return { a, b };
     }
   } catch (e) { }
   document.getElementById('namesModal').style.display = 'flex';
-  buildAuthorSelect('Yo', 'Él');
   return null;
-}
-function buildAuthorSelect(a, b) {
-  const opts = `<option value="${esc(a)}">${esc(a)}</option><option value="${esc(b)}">${esc(b)}</option>`;
-  document.getElementById('noteAuthor').innerHTML = opts;
 }
 async function openNamesModal() {
   try {
@@ -108,9 +102,7 @@ async function saveNames() {
   await setVal('meta:names', { a, b });
   document.getElementById('heroNames').textContent = `${a} & ${b}`;
   document.getElementById('navBrand').textContent = `✦ ${a} & ${b}`;
-  buildAuthorSelect(a, b);
   document.getElementById('namesModal').style.display = 'none';
-  renderNotes();
 }
 document.getElementById('heroNames').addEventListener('click', () => {
   openNamesModal();
@@ -544,63 +536,6 @@ async function addPhoto(e) {
   renderPhotos();
   return false;
 }
-
-async function renderNotes() {
-  const list = await getArr('notes');
-  const el = document.getElementById('notesList');
-  if (!list.length) {
-    el.innerHTML = '<div class="empty-state">Aún no se han escrito notas. Sé el primero.</div>';
-  } else {
-    el.innerHTML = list.slice().reverse().map(n => {
-      const d = new Date(n.ts);
-      return `<div class="note-card" data-id="${n.id}">
-        <button class="edit-btn" onclick="startEditNote('${n.id}')" title="Editar nota">✎ editar</button>
-        <div class="author">${esc(n.author)}</div>
-        <p class="text">${esc(n.text)}</p>
-        <div class="date">${d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}${n.editedAt ? ' · editada' : ''}</div>
-      </div>`;
-    }).join('');
-  }
-}
-function startEditNote(id) {
-  const card = document.querySelector(`.note-card[data-id="${id}"]`);
-  if (!card) return;
-  const textEl = card.querySelector('.text');
-  const currentText = textEl.textContent;
-  card.querySelector('.edit-btn').style.display = 'none';
-  const dateEl = card.querySelector('.date');
-  textEl.outerHTML = `<textarea class="edit-textarea">${esc(currentText)}</textarea>
-    <div class="edit-actions">
-      <button class="save-btn" onclick="saveEditNote('${id}')">Guardar</button>
-      <button class="cancel-btn" onclick="renderNotes()">Cancelar</button>
-    </div>`;
-  if (dateEl) dateEl.style.display = 'none';
-}
-async function saveEditNote(id) {
-  const card = document.querySelector(`.note-card[data-id="${id}"]`);
-  const newText = card.querySelector('.edit-textarea').value.trim();
-  if (!newText) return;
-  const list = await getArr('notes');
-  const idx = list.findIndex(n => n.id === id);
-  if (idx === -1) return;
-  list[idx].text = newText;
-  list[idx].editedAt = Date.now();
-  await setVal('notes', list);
-  renderNotes();
-}
-async function addNote(e) {
-  e.preventDefault();
-  const author = document.getElementById('noteAuthor').value;
-  const text = document.getElementById('noteText').value.trim();
-  if (!text) return false;
-  const list = await getArr('notes');
-  list.push({ id: uid(), author, text, ts: Date.now() });
-  await setVal('notes', list);
-  document.getElementById('noteText').value = '';
-  renderNotes();
-  return false;
-}
-document.getElementById('noteAuthor').addEventListener('change', renderNotes);
 
 const SEED_REASON_TEXTS = `
 Porque eres tú.
@@ -1265,7 +1200,6 @@ async function startApp() {
   renderPhotos();
   await seedReasonsOnce();
   renderReasons();
-  renderNotes();
 }
 
 (async function boot() {

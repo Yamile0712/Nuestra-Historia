@@ -57,14 +57,14 @@
   <button data-target="poemas">Poemas</button>
   <button data-target="fotos">Fotos</button>
   <button data-target="razones">Razones</button>
-  <button data-target="notas">Notas</button>
+  <button data-target="juego">Juego</button>
 </nav>
 
 <section id="inicio">
   <div class="thread"></div>
   <div class="eyebrow" style="text-align:center;">Una página solo para nosotros</div>
   <h1 class="hero-names" id="heroNames" title="Toca para editar los nombres">Tú &amp; Yo</h1>
-  <p class="hero-tag">Aquí guardamos las canciones que nos recuerdan al otro, los poemas, las fotos y las notas que nos escribimos cuando no estamos cerca.</p>
+  <p class="hero-tag">Aquí guardamos las canciones que nos recuerdan al otro, los poemas, las fotos y nuestros juegos favoritos.</p>
   <div>
     <button class="edit-since" onclick="openNamesModal()">cambiar nombres</button>
     <button class="edit-since" onclick="openApodosEditModal()">cambiar apodos de acceso</button>
@@ -102,16 +102,12 @@
   </div>
 </div>
 
-<section id="notas">
-  <div class="eyebrow">de mí para ti, de ti para mí</div>
-  <h2>Notas de Amor</h2>
-  <p class="sub">Un lugar para dejarnos mensajes cuando queramos decir algo sin decirlo en persona. Se guardan aquí para siempre.</p>
-  <div class="note-form">
-    <select class="who" id="noteAuthor"></select>
-    <input id="noteText" placeholder="Escribe tu nota..." style="flex:2;">
-    <button class="submit btn-gold" onclick="addNote(event)">Enviar</button>
+<section id="juego">
+  <div class="eyebrow">un momento para jugar</div>
+  <h2>Nuestro juego</h2>
+  <div class="game-frame-wrap">
+    <iframe class="game-frame" src="https://juego-bala.vercel.app/" title="Juego de bala" allow="fullscreen; autoplay; gamepad" allowfullscreen loading="lazy" scrolling="no"></iframe>
   </div>
-  <div class="grid" id="notesList"></div>
 </section>
 
 <div id="razonesModal" class="poems-modal-overlay" onclick="if(event.target===this) closeReasonsModal()">
