@@ -433,11 +433,8 @@ No solo quiero tenerte.
 Quiero consumirte tan completamente que no quede ningún lugar donde puedas existir excepto debajo de mi piel.`},
  {
    title: "Un corazón obstinado", featured: false, text: `Sé que no quieres estar conmigo, pero mi corazón no sabe rendirse.
-
 Se aferra a tu sombra en la memoria, camina de noche buscándote en mis sueños, y tropieza una y otra vez con el eco de tu ausencia.
-
 Sé que tus pasos ya eligieron otro camino, pero dentro de mí, algo insiste en esperarte, como si la esperanza fuera más fuerte que la verdad que me repites con tus silencios
-
 Sé que no quieres estar conmigo, y aun así despierto cada día con un corazón obstinado que no conoce la derrota.`}
 ];
 
