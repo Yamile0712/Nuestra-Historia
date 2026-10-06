@@ -130,12 +130,6 @@ async function saveApodosEdit() {
   setTimeout(closeApodosEditModal, 1200);
 }
 
-function getSpotifyEmbed(url) {
-  if (!url) return null;
-  const m = url.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
-  return m ? { type: m[1], id: m[2] } : null;
-}
-
 async function renderSongs() {
   const list = await getArr('songs');
   const el = document.getElementById('songsList');
@@ -154,22 +148,6 @@ async function renderSongs() {
       ${s.note ? `<div class="song-note">"${esc(s.note)}"</div>` : ''}
     </div>`).join('');
 }
-async function addSong(e) {
-  e.preventDefault();
-  const title = document.getElementById('songTitle').value.trim();
-  if (!title) return false;
-  const artist = document.getElementById('songArtist').value.trim();
-  const note = document.getElementById('songNote').value.trim();
-  const videoUrl = document.getElementById('songVideo').value.trim();
-  const sp = getSpotifyEmbed(videoUrl);
-  const list = await getArr('songs');
-  list.push({ id: uid(), title, artist, note, spotifyId: sp ? sp.id : null, spotifyType: sp ? sp.type : null });
-  await setVal('songs', list);
-  e.target.reset();
-  renderSongs();
-  return false;
-}
-
 const SEED_SONGS = [
   { title: "Canela", artist: "Nanpa Básico & Charles Ans", spotifyId: "592R1yDJZI1NUKHpjyLCua", spotifyType: "track", note: "Te la dedico porque tienes un sabor dulce y adictivo que se me quedó grabado en el alma. Me recuerda a ese amor sin afán, que se disfruta despacito pero con una intensidad enorme. Es para decirte que tu aroma, tu boca y tu forma de tratarme me atrapan por completo, y que no hay nada más rico que perder el tiempo entre tus brazos sintiendo que la vida a tu lado sabe a gloria." },
   { title: "Dibújame", artist: "Rich Vagos (Gera MX, Charles Ans, Samantha Barrón)", spotifyId: "0RKglZdTQ7BLrs6vplb2qm", spotifyType: "track", note: "Te la dedico porque me fascina la forma en que me miras y cómo logras sacar la versión más bonita de mí. Es ese tipo de amor que inspira, que parece arte. Es mi forma de decirte que me encanta cómo encajamos, que contigo los días grises agarran color y que quiero que me sigas esculpiendo a besos, porque en tu vida y en tus planes es donde mejor me veo." },
@@ -464,8 +442,6 @@ async function seedPoemsOnce() {
 async function renderPoems() {
   const list = await getArr('poems');
   const el = document.getElementById('poemsList');
-  const featuredEl = document.getElementById('poemFeatured');
-  if (featuredEl) featuredEl.innerHTML = '';
   if (!list.length) { el.innerHTML = '<div class="empty-state">Todavía no has guardado ningún poema.</div>'; return; }
   const pinned = list.filter(p => p.title === 'Suicido De Amor');
   const rest = list.filter(p => p.title !== 'Suicido De Amor').slice().reverse();
@@ -476,19 +452,6 @@ async function renderPoems() {
       <p>${esc(p.text)}</p>
     </div>`).join('');
 }
-async function addPoem(e) {
-  e.preventDefault();
-  const title = document.getElementById('poemTitle').value.trim();
-  const text = document.getElementById('poemText').value.trim();
-  if (!title || !text) return false;
-  const list = await getArr('poems');
-  list.push({ id: uid(), title, text, date: new Date().toISOString().slice(0, 10), featured: false });
-  await setVal('poems', list);
-  e.target.reset();
-  renderPoems();
-  return false;
-}
-
 const SEED_PHOTOS = [
   { id: "seed-photo-1", url: "images/photo-01.jpg" },
   { id: "seed-photo-2", url: "images/photo-02.jpg" },
@@ -547,18 +510,6 @@ async function renderPhotos() {
       <img src="${esc(p.url)}" alt="" onerror="this.style.display='none'">
     </div>`).join('');
 }
-async function addPhoto(e) {
-  e.preventDefault();
-  const url = document.getElementById('photoUrl').value.trim();
-  if (!url) return false;
-  const list = await getArr('photos');
-  list.push({ id: uid(), url });
-  await setVal('photos', list);
-  e.target.reset();
-  renderPhotos();
-  return false;
-}
-
 const SEED_REASON_TEXTS = `
 Porque eres tú.
 Porque me haces sentir especial.
@@ -955,13 +906,6 @@ async function renderReasons() {
       <p class="reason-text">${esc(reason.text)}</p>
     </div>`).join('');
 }
-async function deleteItem(key, id) {
-  const list = await getArr(key);
-  await setVal(key, list.filter(x => x.id !== id));
-  const map = { songs: renderSongs, poems: renderPoems, photos: renderPhotos, reasons: renderReasons };
-  map[key] && map[key]();
-}
-
 function openPoemsModal() {
   document.getElementById('poemasModal').classList.add('open');
   document.body.style.overflow = 'hidden';
