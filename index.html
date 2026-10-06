@@ -138,6 +138,23 @@
   </div>
 </div>
 
+<div id="soyTuyaModal" class="secret-modal-overlay" onclick="if(event.target===this) closeSoyTuyaModal()">
+  <div class="secret-image-panel" role="dialog" aria-modal="true" aria-labelledby="soyTuyaTitle">
+    <button class="poems-modal-close" onclick="closeSoyTuyaModal()" aria-label="Cerrar Soy tuya">✕</button>
+    <div class="eyebrow" id="soyTuyaTitle">Soy tuya</div>
+    <form class="soy-tuya-password" onsubmit="return unlockSoyTuya(event)">
+      <label for="soyTuyaPassword">Mi cumpleaños guarda la llave. ¿Cuál es la contraseña?</label>
+      <input id="soyTuyaPassword" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-describedby="soyTuyaPasswordError" required>
+      <button class="btn-gold" type="submit">Ver fotos</button>
+      <p id="soyTuyaPasswordError" class="soy-tuya-password-error" aria-live="polite"></p>
+    </form>
+    <div class="soy-tuya-images" hidden>
+      <img src="images/photo-40.jpeg" alt="Foto 40">
+      <img src="images/photo-41.jpeg" alt="Foto 41">
+    </div>
+  </div>
+</div>
+
 <div id="atlasModal" class="atlas-modal-overlay" aria-hidden="true">
   <div class="atlas-modal-panel" role="dialog" aria-modal="true" aria-labelledby="atlasModalTitle">
     <div class="atlas-modal-header">
@@ -157,6 +174,7 @@
   <button class="secret-trigger" data-secret-id="esperare" aria-label="Descubrir otro secreto">Esperaré 🌱</button>
   <button type="button" class="secret-trigger" data-atlas-page="https://atlasstarsmedellin.vercel.app/" aria-label="Abrir Mi estrella más brillante">Mi estrella más brillante ⭐</button>
   <button class="secret-trigger" data-secret-id="nuestro-dibujo" aria-label="Descubrir nuestro dibujo">Nuestro Dibujo 🎨</button>
+  <button class="secret-trigger" data-secret-id="soy-tuya" aria-label="Descubrir Soy tuya">Soy tuya</button>
 </footer>
 
 </div>

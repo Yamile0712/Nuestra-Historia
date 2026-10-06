@@ -1064,6 +1064,29 @@ function closeDrawingModal() {
   document.getElementById('drawingModal').classList.remove('open');
   document.body.style.overflow = '';
 }
+function openSoyTuyaModal() {
+  document.querySelector('.soy-tuya-password').hidden = false;
+  document.querySelector('.soy-tuya-password').reset();
+  document.getElementById('soyTuyaPasswordError').textContent = '';
+  document.querySelector('.soy-tuya-images').hidden = true;
+  document.getElementById('soyTuyaModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('soyTuyaPassword').focus();
+}
+function unlockSoyTuya(e) {
+  e.preventDefault();
+  if (document.getElementById('soyTuyaPassword').value !== '1706') {
+    document.getElementById('soyTuyaPasswordError').textContent = 'La contraseña no es correcta. Inténtalo de nuevo.';
+    return false;
+  }
+  document.querySelector('.soy-tuya-password').hidden = true;
+  document.querySelector('.soy-tuya-images').hidden = false;
+  return false;
+}
+function closeSoyTuyaModal() {
+  document.getElementById('soyTuyaModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 function openAtlasModal(url) {
   const modal = document.getElementById('atlasModal');
   document.getElementById('atlasFrame').src = url;
@@ -1090,6 +1113,7 @@ document.querySelectorAll('.secret-trigger[data-secret-id]').forEach(trigger => 
     setTimeout(() => {
       trigger.classList.remove('is-awakening');
       if (trigger.dataset.secretId === 'nuestro-dibujo') openDrawingModal();
+      else if (trigger.dataset.secretId === 'soy-tuya') openSoyTuyaModal();
       else openSecretModal(trigger.dataset.secretId);
     }, 700);
   });
@@ -1106,7 +1130,7 @@ document.querySelectorAll('.secret-trigger[data-atlas-page]').forEach(trigger =>
   });
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closePoemsModal(); closeCancionesModal(); closeFotosModal(); closeReasonsModal(); closeSecretModal(); closeDrawingModal(); closeAtlasModal(); }
+  if (e.key === 'Escape') { closePoemsModal(); closeCancionesModal(); closeFotosModal(); closeReasonsModal(); closeSecretModal(); closeDrawingModal(); closeSoyTuyaModal(); closeAtlasModal(); }
 });
 
 const navButtons = document.querySelectorAll('nav button[data-target]');
